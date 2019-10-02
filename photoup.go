@@ -48,7 +48,6 @@ func photoUp(w http.ResponseWriter, r *http.Request) {
 	for _, files := range r.MultipartForm.File {
 		log.Printf("[files] - %+v\n\n", files)
 		for _, file := range files {
-			//log.Printf("\t[file] - %v - %v\n", k, file)
 
 			// open uploaded  
 			var infile multipart.File
@@ -71,14 +70,12 @@ func photoUp(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			//r.Write([]byte("uploaded file:" + file.Filename + ";length:" + strconv.Itoa(int(written))))
-
 			if written > 1024 {
 				fmt.Fprintf(w, "uploaded file: %s : length: %s kbytes\n",file.Filename, strconv.Itoa(int(written/1024)))
 			} else {
 				fmt.Fprintf(w, "uploaded file: %s : length: %s bytes\n",file.Filename, strconv.Itoa(int(written)))
 			}
-			
+
 			totalWritten += written
 		}
 	}
