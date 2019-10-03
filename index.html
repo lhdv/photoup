@@ -1,9 +1,65 @@
-<html>
-	<h1>HOORAY!!!!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Photo Upload</title>
+</head>
+<body>
+	<h1>Photo Upload</h1>
 	<!-- IMPORTANT:  FORM's enctype must be "multipart/form-data" -->
 	<form method="post" action="/photoup" enctype="multipart/form-data">
-		  <input name="origUser" id="origUser" type="text" />
-		  <input name="filesToUpload" id="filesToUpload" type="file" multiple="" />
-		  <input type="submit" value="Upload" />
+		<p><label for="userEmail">Email: </label><input name="userEmail" id="userEmail" type="email" disabled="true" value="foo@example.com"/></p>
+		<p><input name="filesToUpload" id="filesToUpload" type="file" multiple="" />
+		   <input type="submit" value="Upload" /></p>
+		<p><input type="button" id='btnGetFiles' value="Get files" /></p>
+		<div class="listFiles"></div>
 	</form>
+	<script>
+		function listFiles() {
+			let inputData = document.getElementById('filesToUpload').files;
+			let fileCount = inputData.length;
+			let fileSize = 0;
+
+			let listFiles = document.getElementsByClassName('listFiles')[0];
+			let parFileCount = document.createElement("p");
+			parFileCount.textContent = "File count: " + fileCount;
+			listFiles.innerHTML = '';
+			listFiles.appendChild(parFileCount);
+
+			for(let i = 0; i < inputData.length; i++) {
+				fileSize += inputData[i].size;
+			}
+
+			fileSize = fileSize / 1024;
+
+			let parFileSize = document.createElement("p");
+			parFileSize.textContent = "File size: " + fileSize + " KBytes";
+			listFiles.appendChild(parFileSize);
+
+			let confirmUpload = true;
+			if (fileSize > 1024) {
+				confirmUpload = window.confirm("Tamanho das fotos/videos selecioandos é muito grande, vai demorar. Deseja continuar?");
+			}
+
+			let parUpload = document.createElement("p");
+			if (confirmUpload) {
+				parUpload.textContent = "E lá vamos nós! Seja o que deus quiser!";
+			} else {
+				parUpload.textContent = "Selecione poucos arquivos";
+			}
+			listFiles.appendChild(parUpload);
+
+		}
+
+		document.addEventListener("DOMContentLoaded", function(event) { 
+			let btnGetFile = document.getElementById('btnGetFiles');
+			btnGetFile.addEventListener('click', event => {
+				  listFiles();
+			});
+		});
+	</script>
+
+</body>
 </html>
